@@ -12,6 +12,12 @@ import { drawers } from "./config";
 
 function DrawersComponent() {
   const [displayLists, setDisplayLists] = useState(drawers.drawers);
+  const [initialState, setInitialState] = useState(
+    drawers.drawers.map(() => false)
+  );
+  // const initialState = drawers.drawers.map(()=>false);
+  // console.log(initialState,'hello')
+  const [isDragging, setIsDragging] = useState(Number(0));
 
   const recorder = (sourceIndex, destinationIndex) => {
     console.log(
@@ -52,11 +58,6 @@ function DrawersComponent() {
     let temp = newItems[index];
     newItems[index] = newItems[source_index];
     newItems[source_index] = temp;
-    console.log(
-      "backend_data after swap",
-      newItems[index],
-      newItems[source_index]
-    );
     setDisplayLists(newItems);
   };
 
@@ -64,11 +65,7 @@ function DrawersComponent() {
     <div className="repos">
       <h1>Here is DrawersComponent</h1>
       <div style={{ width: "100%", height: "20px" }}></div>
-      <div
-        className="reposList"
-        // style={{ display: "flex", flexWrap: "wrap", width: "100%"  }}
-      >
-
+      <div className="reposList">
         {displayLists.map((drawer, index) => {
           if (drawer == null) {
             return (
@@ -86,10 +83,20 @@ function DrawersComponent() {
           } else if (drawer.boxNumber == null && drawer.project == "") {
             return (
               <div
-                className="not-null" 
+                className="not-null"
                 draggable
-                style={{ width: `${100 / drawers.cols}%` }}
+                style={{
+                  width: `${100 / drawers.cols}%`,
+                  opacity: initialState[index] == true ? 0.3 : 1,
+                }}
+                onMouseDown={(e) => {
+                  console.log("mouse is downed!");
+                  const tmp = [...initialState];
+                  tmp[index] = true;
+                  setInitialState([...tmp]);
+                }}
                 onDragStart={(e) => {
+                  console.log("drag is started!");
                   e.dataTransfer.setData("text/plain", index);
                   e.dataTransfer.setData(
                     "application/json",
@@ -97,9 +104,15 @@ function DrawersComponent() {
                   );
                 }}
                 onDragOver={(e) => {
+                  console.log("drag overed!");
                   e.preventDefault();
                 }}
+                onDragEnd={(e) => {
+                  console.log("mouse is released!");
+                  setInitialState(drawers.drawers.map(() => false));
+                }}
                 onDrop={(e) => {
+                  console.log("dropped");
                   e.preventDefault();
                   handleSwitch(e, index);
                 }}
@@ -116,10 +129,20 @@ function DrawersComponent() {
           } else {
             return (
               <div
-                className="not-null" 
-                style={{ width: `${100 / drawers.cols}%` }}
+                className="not-null"
+                style={{
+                  width: `${100 / drawers.cols}%`,
+                  opacity: initialState[index] == true ? 0.3 : 1,
+                }}
                 draggable
+                onMouseDown={(e) => {
+                  console.log("mouse is downed!");
+                  const tmp = [...initialState];
+                  tmp[index] = true;
+                  setInitialState([...tmp]);
+                }}
                 onDragStart={(e) => {
+                  console.log("drag is started!");
                   e.dataTransfer.setData("text/plain", index);
                   e.dataTransfer.setData(
                     "application/json",
@@ -127,9 +150,15 @@ function DrawersComponent() {
                   );
                 }}
                 onDragOver={(e) => {
+                  console.log("drag overed!");
                   e.preventDefault();
                 }}
+                onDragEnd={(e) => {
+                  console.log("mouse is released!");
+                  setInitialState(drawers.drawers.map(() => false));
+                }}
                 onDrop={(e) => {
+                  console.log("dropped");
                   e.preventDefault();
                   handleSwitch(e, index);
                 }}
