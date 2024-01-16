@@ -1,0 +1,99 @@
+@import "../../styles/variables";
+
+.repo {
+  padding-left: $defaultIndent;
+  position: relative;
+  // width: 20%;
+  box-sizing: border-box;
+}
+
+.name {
+  color: #4078c0;
+  font-size: 16px;
+}
+
+.desc {
+  font-size: 14px;
+  margin-bottom: 16px;
+  margin-top: 8px;
+  color: #767676;
+  font-weight: 100;
+  min-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel {
+  display: flex;
+  flex-flow: row;
+}
+
+.property {
+  color: #767676;
+  font-weight: 100;
+  margin-right: 50px;
+}
+
+.fa {
+  margin-right: 5px;
+}
+
+.stars {
+  @extend .property;
+  flex: 1;
+  text-align: right;
+  margin-right: 0;
+  .fa {
+    margin-right: 0;
+  }
+}
+
+.size {
+  @extend .property;
+}
+
+.trash {
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.finish {
+  font-size: 15px;
+  color: blue;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+}
+
+.plus {
+  font-size: 20px;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+@media(max-width: $widthScreenDisplayLarge) {
+  .repo {
+    width: 120px;
+  }
+  
+}
+@media(max-width: $widthScreenDisplayDefault) {
+  .repo {
+    width: 100px;
+  }
+}
+@media(max-width: $widthScreenLaptopSmall) {
+  .repo {
+    width: 80px;
+  }
+}
+// @media(max-width: $widthScreenTabletPortrait) {
+//   .repo {
+//     width: 100%;
+//   }
+// }
+
