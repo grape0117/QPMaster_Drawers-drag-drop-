@@ -49,7 +49,7 @@ const ReposCard = (props) => {
             details != null && details.completed == true ? "pink" : "",
         }}
       >
-        {details.status == false || (details.boxNumber == null && details.project == "") 
+        {details == null || (details.boxNumber == null && details.project == "") 
         ? (
           <div>
             <CardSection mb="sm">

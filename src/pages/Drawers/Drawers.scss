@@ -7,10 +7,13 @@
 }
 
 .reposList {
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
-  margin-left: -$defaultIndent;
+  display: flex; 
+  flex-wrap: wrap; 
+  width: 100%
+}
+
+.not-null :hover {
+  cursor: pointer;
 }
 
 .link {

@@ -10,8 +10,6 @@ import "./Drawers.scss";
 // config
 import { drawers } from "./config";
 
-const test_item = { boxNumber: null, project: "402743", completed: false };
-
 function DrawersComponent() {
   const [displayLists, setDisplayLists] = useState(drawers.drawers);
 
@@ -45,81 +43,108 @@ function DrawersComponent() {
       return;
     }
   };
-  
+
+  const handleSwitch = (e, index) => {
+    // let source_data = JSON.parse(e.dataTransfer.getData('application/json'));
+    var source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
+
+    const newItems = [...displayLists];
+    let temp = newItems[index];
+    newItems[index] = newItems[source_index];
+    newItems[source_index] = temp;
+    console.log(
+      "backend_data after swap",
+      newItems[index],
+      newItems[source_index]
+    );
+    setDisplayLists(newItems);
+  };
+
   return (
     <div className="repos">
       <h1>Here is DrawersComponent</h1>
       <div style={{ width: "100%", height: "20px" }}></div>
-      <div className="">
-        <ListManager
-          items={displayLists}
-          draggableID={item => item.id}
-          direction="horizontal"
-          maxItems={drawers.cols}
-          render={(item) => {
-            {
-              if(item.status == false) {
-                return <ReposCard
-                          description="false"
-                          details={item}
-                          visibility="hidden"
-                          cols={drawers.cols}
-                        />
-              } else if(item.boxNumber == null && item.project == "") {
-                return <ReposCard
-                          description="Empty drawer"
-                          details={item}
-                          cols={drawers.cols}
-                        />
-              } else {
-                return <ReposCard
-                          description='exist'
-                          details={item}
-                          cols={drawers.cols}
-                        />
-              }
-            }
-          }}
-          onDragEnd={recorder}            
-        />
-        
-              
-            
-        {/* {drawers.drawers.map((drawer, index) => {
-          // console.log("INDEX", index)
+      <div
+        className="reposList"
+        // style={{ display: "flex", flexWrap: "wrap", width: "100%"  }}
+      >
+
+        {displayLists.map((drawer, index) => {
           if (drawer == null) {
             return (
-              <ReposCard
-                key={index}
-                index={index}
-                description="false"
-                details={drawer}
-                visibility="hidden"
-                cols={drawers.cols}
-              />
+              <div style={{ width: `${100 / drawers.cols}%` }}>
+                <ReposCard
+                  key={index}
+                  index={index}
+                  description="false"
+                  details={drawer}
+                  visibility="hidden"
+                  cols={drawers.cols}
+                />
+              </div>
             );
           } else if (drawer.boxNumber == null && drawer.project == "") {
             return (
-              <ReposCard
-                key={index}
-                index={index}
-                description="Empty drawer"
-                details={drawer}
-                cols={drawers.cols}
-              />
+              <div
+                className="not-null" 
+                draggable
+                style={{ width: `${100 / drawers.cols}%` }}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", index);
+                  e.dataTransfer.setData(
+                    "application/json",
+                    JSON.stringify(drawer)
+                  );
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  handleSwitch(e, index);
+                }}
+              >
+                <ReposCard
+                  key={index}
+                  index={index}
+                  description="Empty drawer"
+                  details={drawer}
+                  cols={drawers.cols}
+                />
+              </div>
             );
           } else {
             return (
-              <ReposCard
-                key={index}
-                index={index}
-                description="exist"
-                details={drawer}
-                cols={drawers.cols}
-              />
+              <div
+                className="not-null" 
+                style={{ width: `${100 / drawers.cols}%` }}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", index);
+                  e.dataTransfer.setData(
+                    "application/json",
+                    JSON.stringify(drawer)
+                  );
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  handleSwitch(e, index);
+                }}
+              >
+                <ReposCard
+                  key={index}
+                  index={index}
+                  description="exist"
+                  details={drawer}
+                  cols={drawers.cols}
+                />
+              </div>
             );
           }
-        })} */}
+        })}
       </div>
     </div>
   );

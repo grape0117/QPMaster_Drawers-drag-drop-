@@ -25,47 +25,96 @@ export default Dashboard;
 // function Dashboard() {
 //   const [displayLists, setDisplayLists] = useState(drawers.drawers)
 
-//   const recorder = (sourceIndex, destinationIndex) => {
-//     console.log("sourceIndex", sourceIndex, "destinationIndex", destinationIndex);
+//   const handleSwitch = (e, index) => {
+//     // let source_data = JSON.parse(e.dataTransfer.getData('application/json'));
+//     var source_index = JSON.parse(e.dataTransfer.getData('text/plain'))
 
-//     if (sourceIndex == destinationIndex) {
-//       return;
-//     } else if (sourceIndex > destinationIndex) {
-
-//       const newItems = [...displayLists];
-//       const [removed] = newItems.splice(sourceIndex, 1);
-//       newItems.splice(destinationIndex, 0, removed);
-//       const [old_dest] = newItems.splice(destinationIndex + 1, 1);
-//       newItems.splice(sourceIndex, 0, old_dest)
-//       setDisplayLists(newItems)
-
-//       return;
-//     } else {
-
-//       const newItems = [...displayLists];
-//       const [removed] = newItems.splice(sourceIndex, 1);
-//       newItems.splice(destinationIndex, 0, removed);
-//       const [old_dest] = newItems.splice(destinationIndex - 1, 1);
-//       newItems.splice(sourceIndex, 0, old_dest) ;
-//       setDisplayLists(newItems)
-
-//       return;
-//     }
-//   };
+//     const newItems = [...displayLists];
+//     let temp = newItems[index];
+//     newItems[index] = newItems[source_index];
+//     newItems[source_index]= temp;
+//     console.log('backend_data after swap', newItems[index], newItems[source_index]);
+//     setDisplayLists(newItems); 
+//   }
 
 //   return (
-//     <ListManager
-//       items={displayLists}
-//       direction="horizontal"
-//       maxItems={drawers.cols}
-//       render={(item) => 
-//         <ReposCard
-//           description='exist'
-//           details={item}
-//           cols={drawers.cols}
-//           item={item} />}
-//       onDragEnd={recorder}
-//     />
+//      <div 
+//       style={{display: 'flex', flexWrap: 'wrap', width: '100%'}}
+//      >
+//          {displayLists.map((drawer, index) => 
+//          {
+//             // console.log("INDEX", drawer)
+//             if (drawer.status == false) {
+//               return (
+//                 <div 
+//                   style={{width: '12.5%'}}
+//                 >
+//                   <ReposCard
+//                     key={index}
+//                     index={index}
+//                     description="false"
+//                     details={drawer}
+//                     visibility="hidden"
+//                     cols={drawers.cols}
+//                   />
+//                 </div>
+//               );
+//             } else if (drawer.boxNumber == null && drawer.project == "") {
+//               return (
+//                 <div 
+//                   draggable
+//                   style={{width: '12.5%'}}
+//                   onDragStart={(e)=>{
+//                     e.dataTransfer.setData('text/plain', index)
+//                     e.dataTransfer.setData('application/json', JSON.stringify(drawer))
+//                   }}
+//                   onDragOver={(e) => {
+//                     e.preventDefault();
+//                   }}
+//                   onDrop={(e) => {
+//                     e.preventDefault();
+//                     handleSwitch(e, index);
+//                   }} 
+//                 >
+//                   <ReposCard
+//                     key={index}
+//                     index={index}
+//                     description="Empty drawer"
+//                     details={drawer}
+//                     cols={drawers.cols}
+//                   />
+//                 </div>
+//               );
+//             } else {
+//               return (
+//                 <div 
+//                   style={{width: '12.5%'}}
+//                   draggable
+//                   onDragStart={(e)=>{
+//                     e.dataTransfer.setData('text/plain', index)
+//                     e.dataTransfer.setData('application/json', JSON.stringify(drawer))
+//                   }}
+//                   onDragOver={(e) => {
+//                     e.preventDefault();
+//                   }}
+//                   onDrop={(e) => {
+//                     e.preventDefault();
+//                     handleSwitch(e, index)
+//                  }} 
+//                 >
+//                   <ReposCard
+//                     key={index}
+//                     index={index}
+//                     description="exist"
+//                     details={drawer}
+//                     cols={drawers.cols}
+//                   />
+//                 </div>
+//               );
+//             }
+         
+//         })} 
+//      </div>
 //   );
 // }
 
