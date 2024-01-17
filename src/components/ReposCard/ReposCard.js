@@ -50,14 +50,19 @@ const ReposCard = (props) => {
         {details === null ||
         (details.boxNumber === null && details.project === "") ? (
           <div>
-            <CardSection mb="sm">
-              <Text mr={2} ml={2} fw={450}>
-                {description}
-              </Text>
-            </CardSection>
-            <ThemeIcon size="lg" color="lime.4">
-              <CreateModal />
-            </ThemeIcon>
+            {details === null && <></>}
+            {details !== null && 
+              <>
+                <CardSection mb="sm">
+                  <Text mr={2} ml={2} fw={450}>
+                    {description}
+                  </Text>
+                </CardSection>
+                <ThemeIcon size="lg" color="lime.4">
+                  <CreateModal />
+                </ThemeIcon>
+              </>
+            }
           </div>
         ) : (
           <div style={{ margin: auto }}>
