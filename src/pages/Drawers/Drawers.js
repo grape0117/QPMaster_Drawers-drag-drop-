@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Components
-import ReposCard from "../../components/ReposCard/ReposCard";
+import ReposCard from "../../components/ReposCard/ReposCard.js";
 
 // Styles
 import "./Drawers.scss";
@@ -52,6 +52,7 @@ function DrawersComponent() {
                 style={{
                   width: `${100 / drawers.cols}%`,
                   opacity: initialState[index] === true ? 0.3 : 1,
+                  MozOpacity: initialState[index] === true ? 0.3 : 1,
                 }}
                 onDragStart={(e) => {
                   let tmp = [...initialState];

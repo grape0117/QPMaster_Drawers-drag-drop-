@@ -51,7 +51,7 @@ const ReposCard = (props) => {
         (details.boxNumber === null && details.project === "") ? (
           <div>
             <CardSection mb="sm">
-              <Text mr={2} ml={2} fw={500}>
+              <Text mr={2} ml={2} fw={450}>
                 {description}
               </Text>
             </CardSection>
@@ -65,7 +65,7 @@ const ReposCard = (props) => {
               <div>
                 <Text fw={500} c="dimmed">
                   Box:{" "}
-                  {details.boxNumber === null ? "default" : details.boxNumber}
+                  {details.boxNumber === null ? "000" : details.boxNumber}
                 </Text>
                 <Text fw={500} fz="md">
                   {" "}
@@ -78,7 +78,7 @@ const ReposCard = (props) => {
                 variant="filled"
                 padding="xs"
                 // size="sm"
-                size={isXlargeScreen ? "sm" : "lg"}
+                size={isXlargeScreen ? "sm" : "md"}
                 color="teal.4"
               >
                 <IconUpload
@@ -90,9 +90,9 @@ const ReposCard = (props) => {
                 variant="filled"
                 padding="xs"
                 // size= "sm"
-                size={isXlargeScreen ? "sm" : "lg"}
+                size={isXlargeScreen ? "sm" : "md"}
                 color="red.4"
-                onClick={() => handleDeleteModal(details, index)}
+                onClick={() => {}}
               >
                 <IconTrash size={15} />
               </ActionIcon>

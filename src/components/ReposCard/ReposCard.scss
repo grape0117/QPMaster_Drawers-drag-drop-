@@ -75,15 +75,15 @@
   right: 10px;
 }
 
-@media(max-width: $widthScreenDisplayLarge) {
+@media(max-width: $widthScreenDisplayDefault) {
   .repo {
     width: 120px;
   }
   
 }
-@media(max-width: $widthScreenDisplayDefault) {
+@media(max-width: $widthScreenLaptopDefault) {
   .repo {
-    width: 100px;
+    width: 110px;
   }
 }
 @media(max-width: $widthScreenLaptopSmall) {
