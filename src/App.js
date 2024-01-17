@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
-import DrawersComponent from './pages/Drawers/Drawers';
+import DrawersComponent from './pages/Drawers/Drawers.tsx';
 
 
 // Styles

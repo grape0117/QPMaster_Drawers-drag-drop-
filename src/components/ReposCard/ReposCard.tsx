@@ -1,6 +1,5 @@
 import React from "react";
 import { useMediaQuery } from "@mantine/hooks";
-import PropTypes from "prop-types";
 
 import {
   Card,
@@ -10,28 +9,42 @@ import {
   ThemeIcon,
   ActionIcon,
 } from "@mantine/core";
-import { IconPointer, IconTrash, IconUpload } from "@tabler/icons-react";
+import { IconTrash, IconUpload } from "@tabler/icons-react";
 
 // Components
-import { DeleteModal, CreateModal } from "../Modals/Modals";
+import { DeleteModal, CreateModal } from "../Modals/Modals.tsx";
 
 // Styles
 import "./ReposCard.scss";
-import { auto } from "@popperjs/core";
 
-// Using "Stateless Functional Components"
-const ReposCard = (props) => {
-  const { index, description, visibility, details, outline } = props;
+type ReposCardProps = {
+  index: number;
+  visibility: string;
+  description: string;
+  details: any;
+  outline: boolean;
+};
 
+const ReposCard: React.FC<ReposCardProps> = ({
+  index,
+  visibility,
+  description,
+  details,
+  outline,
+}: ReposCardProps) => {
   const isXlargeScreen = useMediaQuery("(max-width: 1440px)");
 
-  const handleDeleteModal = (params, index) => {
+  const handleDeleteModal = (params: any, index: number) => {
     DeleteModal(params, index);
   };
 
-  const handleCreateModal = () => {
-    console.log("create");
+  const handleCreateModal = (index) => {
+    console.log("create", index);
   };
+
+  const handleOpenRequest = (index) => {
+    console.log("open requested!", index)
+  }
 
   return (
     <div className="repo">
@@ -44,7 +57,6 @@ const ReposCard = (props) => {
           backgroundColor:
             details != null && details.completed === true ? "pink" : "",
           outline: outline ? '2px dashed gray' : '',
-          
         }}
       >
         {details === null ||
@@ -67,14 +79,14 @@ const ReposCard = (props) => {
             }
           </div>
         ) : (
-          <div style={{ margin: auto }}>
+          <div style={{ margin: "auto" }}>
             <Group pb="xs" position="center">
               <div className="not-null">
-                <Text fw={500} c="dimmed">
+                <Text fw={500} color="dimmed">
                   Box:{" "}
                   {details.boxNumber === null ? "000" : details.boxNumber}
                 </Text>
-                <Text fw={500} fz="md">
+                <Text fw={500} size="md">
                   {" "}
                   {details.project}{" "}
                 </Text>
@@ -83,18 +95,16 @@ const ReposCard = (props) => {
             <Group position="center">
               <ActionIcon
                 variant="filled"
-                padding="xs"
                 size={isXlargeScreen ? "sm" : "md"}
                 color="teal.4"
               >
                 <IconUpload
                   size={15}
-                  onClick={() => console.log("open request", index)}
+                  onClick={() => handleOpenRequest(index)}
                 />
               </ActionIcon>
               <ActionIcon
                 variant="filled"
-                padding="xs"
                 size={isXlargeScreen ? "sm" : "md"}
                 color="red.4"
                 onClick={() => {}}
@@ -107,14 +117,6 @@ const ReposCard = (props) => {
       </Card>
     </div>
   );
-};
-
-ReposCard.propTypes = {
-  cols: PropTypes.number,
-  visibility: PropTypes.string,
-  description: PropTypes.string,
-  details: PropTypes.any,
-  outline: PropTypes.bool,
 };
 
 export default ReposCard;

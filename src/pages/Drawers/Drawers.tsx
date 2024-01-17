@@ -1,21 +1,23 @@
-import { useState } from "react";
-
-// Components
-import ReposCard from "../../components/ReposCard/ReposCard.js";
-
-// Styles
+import React, { useState, useMemo } from "react";
+import ReposCard from "../../components/ReposCard/ReposCard.tsx";
 import "./Drawers.scss";
-
-// config
 import { drawers } from "./config";
 
-function DrawersComponent() {
-  const [displayLists, setDisplayLists] = useState(drawers.drawers);
-  const originalArray = drawers.drawers.map(() => false);
-  const [initialState, setInitialState] = useState(originalArray);
-  const [isOutlined, setIsOutlined] = useState(originalArray);
+type Drawer = {
+  boxNumber: number | null;
+  project: string;
+  completed: boolean;
+} | null;
 
-  const handleSwitch = (e, index) => {
+function DrawersComponent() {
+  const [displayLists, setDisplayLists] = useState<Drawer[]>(drawers.drawers);
+  const originalArray = useMemo(() => {
+    return drawers.drawers.map(() => false);
+  }, []);
+  const [initialState, setInitialState] = useState<boolean[]>(originalArray);
+  const [isOutlined, setIsOutlined] = useState<boolean[]>(originalArray);
+
+  const handleSwitch = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     var source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
 
     const newItems = [...displayLists];
@@ -27,7 +29,6 @@ function DrawersComponent() {
 
   return (
     <div className="repos">
-      <h1>Here is DrawersComponent</h1>
       <div style={{ width: "100%", height: "20px" }}></div>
       <div className="reposList">
         {displayLists.map((drawer, index) => {
@@ -36,11 +37,11 @@ function DrawersComponent() {
               <div style={{ width: `${100 / drawers.cols}%` }}>
                 <ReposCard
                   key={index}
-                  index={index}
+                  index = {index}
                   description="false"
                   details={drawer}
                   visibility="hidden"
-                  cols={drawers.cols}
+                  outline={false}
                 />
               </div>
             );
@@ -50,14 +51,13 @@ function DrawersComponent() {
                 draggable
                 style={{
                   width: `${100 / drawers.cols}%`,
-                  opacity: initialState[index] === true ? 0.3 : 1,
-                  MozOpacity: initialState[index] === true ? 0.3 : 1,
+                  opacity: initialState[index] ? 0.3 : 1,
                 }}
                 onDragStart={(e) => {
                   let tmp = [...initialState];
                   tmp[index] = true;
-                  setInitialState([...tmp]);
-                  e.dataTransfer.setData("text/plain", index);
+                  setInitialState(tmp);
+                  e.dataTransfer.setData("text/plain", index.toString());
                   e.dataTransfer.setData(
                     "application/json",
                     JSON.stringify(drawer)
@@ -67,13 +67,17 @@ function DrawersComponent() {
                   e.preventDefault();
                 }}
                 onDragEnter={(e) => {
+                  console.log("empty entered");
                   let temp = [...isOutlined];
                   temp[index] = true;
-                  setIsOutlined(temp);                  
+                  setIsOutlined(temp);
+                }}
+                onDragLeave={(e) => {
+                  console.log("empty leaved");
+                  setIsOutlined(originalArray);
                 }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
-                  setIsOutlined(originalArray);
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
@@ -82,11 +86,11 @@ function DrawersComponent() {
               >
                 <ReposCard
                   key={index}
-                  index={index}
+                  index = {index}
                   description="Empty drawer"
                   details={drawer}
-                  cols={drawers.cols}
-                  outline = {isOutlined[index]}
+                  visibility=""
+                  outline={isOutlined[index]}
                 />
               </div>
             );
@@ -95,14 +99,14 @@ function DrawersComponent() {
               <div
                 style={{
                   width: `${100 / drawers.cols}%`,
-                  opacity: initialState[index] === true ? 0.3 : 1,
+                  opacity: initialState[index] ? 0.3 : 1,
                 }}
                 draggable
                 onDragStart={(e) => {
                   const tmp = [...initialState];
                   tmp[index] = true;
-                  setInitialState([...tmp]);
-                  e.dataTransfer.setData("text/plain", index);
+                  setInitialState(tmp);
+                  e.dataTransfer.setData("text/plain", index.toString());
                   e.dataTransfer.setData(
                     "application/json",
                     JSON.stringify(drawer)
@@ -112,9 +116,14 @@ function DrawersComponent() {
                   e.preventDefault();
                 }}
                 onDragEnter={(e) => {
+                  console.log("entered")
                   let tmp = [...isOutlined];
                   tmp[index] = true;
-                  setIsOutlined(tmp);                                    
+                  setIsOutlined(tmp);
+                }}
+                onDragLeave={(e) => {
+                  console.log("leaved");
+                  setIsOutlined(originalArray);
                 }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
@@ -127,11 +136,11 @@ function DrawersComponent() {
               >
                 <ReposCard
                   key={index}
-                  index={index}
+                  index = {index}
                   description="exist"
                   details={drawer}
-                  cols={drawers.cols}
-                  outline = {isOutlined[index]}
+                  visibility=""
+                  outline={isOutlined[index]}
                 />
               </div>
             );
