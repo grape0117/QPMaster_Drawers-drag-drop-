@@ -67,7 +67,7 @@ function DrawersComponent() {
                   e.preventDefault();
                 }}
                 onDragEnter={(e) => {
-                  console.log("empty entered");
+                  // console.log("empty entered");
                   let temp = [...isOutlined];
                   temp[index] = true;
                   setIsOutlined(temp);
@@ -114,10 +114,11 @@ function DrawersComponent() {
                   );
                 }}
                 onDragOver={(e) => {
+                  // console.log('drag overed')
                   e.preventDefault();
                 }}
                 onDragEnter={(e) => {
-                  console.log("entered")
+                  // console.log("entered")
                   let tmp = [...isOutlined];
                   tmp[index] = true;
                   setIsOutlined(tmp);

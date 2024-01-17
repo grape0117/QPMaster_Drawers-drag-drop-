@@ -1,5 +1,6 @@
 import React from "react";
 import { useMediaQuery } from "@mantine/hooks";
+import { memo } from "react";
 
 import {
   Card,
@@ -119,4 +120,4 @@ const ReposCard: React.FC<ReposCardProps> = ({
   );
 };
 
-export default ReposCard;
+export default memo(ReposCard);
