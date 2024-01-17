@@ -47,7 +47,6 @@ function DrawersComponent() {
           } else if (drawer.boxNumber === null && drawer.project === "") {
             return (
               <div
-                className="not-null"
                 draggable
                 style={{
                   width: `${100 / drawers.cols}%`,
@@ -94,7 +93,6 @@ function DrawersComponent() {
           } else {
             return (
               <div
-                className="not-null"
                 style={{
                   width: `${100 / drawers.cols}%`,
                   opacity: initialState[index] === true ? 0.3 : 1,

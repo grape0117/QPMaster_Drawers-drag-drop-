@@ -10,7 +10,7 @@ import {
   ThemeIcon,
   ActionIcon,
 } from "@mantine/core";
-import { IconTrash, IconUpload } from "@tabler/icons-react";
+import { IconPointer, IconTrash, IconUpload } from "@tabler/icons-react";
 
 // Components
 import { DeleteModal, CreateModal } from "../Modals/Modals";
@@ -54,9 +54,11 @@ const ReposCard = (props) => {
             {details !== null && 
               <>
                 <CardSection mb="sm">
-                  <Text mr={2} ml={2} fw={450}>
-                    {description}
-                  </Text>
+                  <div className="not-null">
+                    <Text mr={2} ml={2} fw={450}>
+                      {description}
+                    </Text>
+                  </div>
                 </CardSection>
                 <ThemeIcon size="lg" color="lime.4">
                   <CreateModal />
@@ -67,7 +69,7 @@ const ReposCard = (props) => {
         ) : (
           <div style={{ margin: auto }}>
             <Group pb="xs" position="center">
-              <div>
+              <div className="not-null">
                 <Text fw={500} c="dimmed">
                   Box:{" "}
                   {details.boxNumber === null ? "000" : details.boxNumber}
@@ -82,7 +84,6 @@ const ReposCard = (props) => {
               <ActionIcon
                 variant="filled"
                 padding="xs"
-                // size="sm"
                 size={isXlargeScreen ? "sm" : "md"}
                 color="teal.4"
               >
@@ -94,7 +95,6 @@ const ReposCard = (props) => {
               <ActionIcon
                 variant="filled"
                 padding="xs"
-                // size= "sm"
                 size={isXlargeScreen ? "sm" : "md"}
                 color="red.4"
                 onClick={() => {}}

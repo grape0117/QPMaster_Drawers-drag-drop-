@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+.not-null :hover {
+  cursor:grab
+}
+
 .name {
   color: #4078c0;
   font-size: 16px;
