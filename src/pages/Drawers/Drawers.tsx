@@ -72,12 +72,13 @@ function DrawersComponent() {
                   temp[index] = true;
                   setIsOutlined(temp);
                 }}
-                onDragLeave={(e) => {
-                  console.log("empty leaved");
-                  setIsOutlined(originalArray);
-                }}
+                // onDragLeave={(e) => {
+                //   console.log("empty leaved");
+                //   setIsOutlined(originalArray);
+                // }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
+                  setIsOutlined(originalArray);
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
@@ -121,10 +122,10 @@ function DrawersComponent() {
                   tmp[index] = true;
                   setIsOutlined(tmp);
                 }}
-                onDragLeave={(e) => {
-                  console.log("leaved");
-                  setIsOutlined(originalArray);
-                }}
+                // onDragLeave={(e) => {
+                //   console.log("leaved");
+                //   setIsOutlined(originalArray);
+                // }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
                   setIsOutlined(originalArray);
