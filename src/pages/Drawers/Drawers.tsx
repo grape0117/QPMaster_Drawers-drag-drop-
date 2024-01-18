@@ -17,16 +17,19 @@ function DrawersComponent() {
   const [initialState, setInitialState] = useState<boolean[]>(originalArray);
   const [isOutlined, setIsOutlined] = useState<boolean[]>(originalArray);
 
-  const handleSwitch = useCallback((e: React.DragEvent<HTMLDivElement>, index: number) => {
+  const handleSwitch = 
+  // useCallback(
+    (e: React.DragEvent<HTMLDivElement>, index: number) => {
     let source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
     const newItems = [...displayLists];
     let temp = newItems[index];
     newItems[index] = newItems[source_index];
     newItems[source_index] = temp;
     setDisplayLists(newItems);
-  }, []);
+  };
 
-  const handleDragStart = useCallback(
+  const handleDragStart = 
+  // useCallback(
     (e: React.DragEvent<HTMLDivElement>, index: number, drawer: Drawer) => {
       let tmp = [...initialState];
       tmp[index] = true;
@@ -36,15 +39,16 @@ function DrawersComponent() {
         "application/json",
         JSON.stringify(drawer)
       );
-    }, [])
+    };
 
-  const handleDragEnter = useCallback(
-    (index: number) => {
+  const handleDragEnter = 
+  // useCallback(
+  //   (index: number) 
+   (index: number) => {
       let temp = [...isOutlined];
       temp[index] = true;
       setIsOutlined(temp);
-    }, []
-  )
+    }
 
   return (
     <div className="repos">
