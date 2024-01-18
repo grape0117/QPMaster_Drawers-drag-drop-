@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import ReposCard from "../../components/ReposCard/ReposCard.tsx";
 import "./Drawers.scss";
 import { drawers } from "./config";
@@ -17,15 +17,34 @@ function DrawersComponent() {
   const [initialState, setInitialState] = useState<boolean[]>(originalArray);
   const [isOutlined, setIsOutlined] = useState<boolean[]>(originalArray);
 
-  const handleSwitch = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    var source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
-
+  const handleSwitch = useCallback((e: React.DragEvent<HTMLDivElement>, index: number) => {
+    let source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
     const newItems = [...displayLists];
     let temp = newItems[index];
     newItems[index] = newItems[source_index];
     newItems[source_index] = temp;
     setDisplayLists(newItems);
-  };
+  }, []);
+
+  const handleDragStart = useCallback(
+    (e: React.DragEvent<HTMLDivElement>, index: number, drawer: Drawer) => {
+      let tmp = [...initialState];
+      tmp[index] = true;
+      setInitialState(tmp);
+      e.dataTransfer.setData("text/plain", index.toString());
+      e.dataTransfer.setData(
+        "application/json",
+        JSON.stringify(drawer)
+      );
+    }, [])
+
+  const handleDragEnter = useCallback(
+    (index: number) => {
+      let temp = [...isOutlined];
+      temp[index] = true;
+      setIsOutlined(temp);
+    }, []
+  )
 
   return (
     <div className="repos">
@@ -37,7 +56,7 @@ function DrawersComponent() {
               <div style={{ width: `${100 / drawers.cols}%` }}>
                 <ReposCard
                   key={index}
-                  index = {index}
+                  index={index}
                   description="false"
                   details={drawer}
                   visibility="hidden"
@@ -54,28 +73,14 @@ function DrawersComponent() {
                   opacity: initialState[index] ? 0.3 : 1,
                 }}
                 onDragStart={(e) => {
-                  let tmp = [...initialState];
-                  tmp[index] = true;
-                  setInitialState(tmp);
-                  e.dataTransfer.setData("text/plain", index.toString());
-                  e.dataTransfer.setData(
-                    "application/json",
-                    JSON.stringify(drawer)
-                  );
+                  handleDragStart(e, index, drawer)
                 }}
                 onDragOver={(e) => {
                   e.preventDefault();
                 }}
-                onDragEnter={(e) => {
-                  // console.log("empty entered");
-                  let temp = [...isOutlined];
-                  temp[index] = true;
-                  setIsOutlined(temp);
+                onDragEnter={() => {
+                  handleDragEnter(index);
                 }}
-                // onDragLeave={(e) => {
-                //   console.log("empty leaved");
-                //   setIsOutlined(originalArray);
-                // }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
                   setIsOutlined(originalArray);
@@ -87,7 +92,7 @@ function DrawersComponent() {
               >
                 <ReposCard
                   key={index}
-                  index = {index}
+                  index={index}
                   description="Empty drawer"
                   details={drawer}
                   visibility=""
@@ -104,29 +109,15 @@ function DrawersComponent() {
                 }}
                 draggable
                 onDragStart={(e) => {
-                  const tmp = [...initialState];
-                  tmp[index] = true;
-                  setInitialState(tmp);
-                  e.dataTransfer.setData("text/plain", index.toString());
-                  e.dataTransfer.setData(
-                    "application/json",
-                    JSON.stringify(drawer)
-                  );
+                  handleDragStart(e, index, drawer);
                 }}
                 onDragOver={(e) => {
                   // console.log('drag overed')
                   e.preventDefault();
                 }}
-                onDragEnter={(e) => {
-                  // console.log("entered")
-                  let tmp = [...isOutlined];
-                  tmp[index] = true;
-                  setIsOutlined(tmp);
+                onDragEnter={() => {
+                  handleDragEnter(index);
                 }}
-                // onDragLeave={(e) => {
-                //   console.log("leaved");
-                //   setIsOutlined(originalArray);
-                // }}
                 onDragEnd={(e) => {
                   setInitialState(originalArray);
                   setIsOutlined(originalArray);
@@ -138,7 +129,7 @@ function DrawersComponent() {
               >
                 <ReposCard
                   key={index}
-                  index = {index}
+                  index={index}
                   description="exist"
                   details={drawer}
                   visibility=""
