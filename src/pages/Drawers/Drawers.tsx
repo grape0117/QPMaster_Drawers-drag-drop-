@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 import ReposCard from "../../components/ReposCard/ReposCard.tsx";
 import "./Drawers.scss";
 import { drawers } from "./config";
@@ -14,41 +14,38 @@ function DrawersComponent() {
   const originalArray = useMemo(() => {
     return drawers.drawers.map(() => false);
   }, []);
-  const [initialState, setInitialState] = useState<boolean[]>(originalArray);
+  const [initialOpacityState, setInitialOpacityState] = useState<boolean[]>(originalArray);
   const [isOutlined, setIsOutlined] = useState<boolean[]>(originalArray);
+  const dragSourceIndex = useRef(0);
 
-  const handleSwitch = 
-  // useCallback(
+
+  const handleSwitch =
+    // useCallback(
     (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    let source_index = JSON.parse(e.dataTransfer.getData("text/plain"));
-    const newItems = [...displayLists];
-    let temp = newItems[index];
-    newItems[index] = newItems[source_index];
-    newItems[source_index] = temp;
-    setDisplayLists(newItems);
-  };
-
-  const handleDragStart = 
-  // useCallback(
-    (e: React.DragEvent<HTMLDivElement>, index: number, drawer: Drawer) => {
-      let tmp = [...initialState];
-      tmp[index] = true;
-      setInitialState(tmp);
-      e.dataTransfer.setData("text/plain", index.toString());
-      e.dataTransfer.setData(
-        "application/json",
-        JSON.stringify(drawer)
-      );
+      let source_index = dragSourceIndex.current;
+      const newItems = [...displayLists];
+      let temp = newItems[index];
+      newItems[index] = newItems[source_index];
+      newItems[source_index] = temp;
+      setDisplayLists(newItems);
     };
 
-  const handleDragEnter = 
-  // useCallback(
-  //   (index: number) 
-   (index: number) => {
-      let temp = [...isOutlined];
-      temp[index] = true;
-      setIsOutlined(temp);
-    }
+  const handleDragStart =
+    useCallback(
+      ( index: number,) => {
+        let tmp = [...initialOpacityState];
+        tmp[index] = true;
+        setInitialOpacityState(tmp);
+        dragSourceIndex.current = index;
+      }, []);
+
+  const handleDragEnter =
+    useCallback(
+      (index: number) => {
+        let temp = [...isOutlined];
+        temp[index] = true;
+        setIsOutlined(temp);
+      }, [])
 
   return (
     <div className="repos">
@@ -74,10 +71,10 @@ function DrawersComponent() {
                 draggable
                 style={{
                   width: `${100 / drawers.cols}%`,
-                  opacity: initialState[index] ? 0.3 : 1,
+                  opacity: initialOpacityState[index] ? 0.3 : 1,
                 }}
-                onDragStart={(e) => {
-                  handleDragStart(e, index, drawer)
+                onDragStart={() => {
+                  handleDragStart(index)
                 }}
                 onDragOver={(e) => {
                   e.preventDefault();
@@ -85,12 +82,14 @@ function DrawersComponent() {
                 onDragEnter={() => {
                   handleDragEnter(index);
                 }}
-                onDragEnd={(e) => {
-                  setInitialState(originalArray);
+                onDragEnterCapture={() => {
+                  setIsOutlined(originalArray);
+                }}
+                onDragEnd={() => {
+                  setInitialOpacityState(originalArray);
                   setIsOutlined(originalArray);
                 }}
                 onDrop={(e) => {
-                  e.preventDefault();
                   handleSwitch(e, index);
                 }}
               >
@@ -109,25 +108,26 @@ function DrawersComponent() {
               <div
                 style={{
                   width: `${100 / drawers.cols}%`,
-                  opacity: initialState[index] ? 0.3 : 1,
+                  opacity: initialOpacityState[index] ? 0.3 : 1,
                 }}
                 draggable
                 onDragStart={(e) => {
-                  handleDragStart(e, index, drawer);
+                  handleDragStart(index);
                 }}
                 onDragOver={(e) => {
-                  // console.log('drag overed')
                   e.preventDefault();
                 }}
                 onDragEnter={() => {
                   handleDragEnter(index);
                 }}
+                onDragEnterCapture={() => {
+                  setIsOutlined(originalArray);
+                }}
                 onDragEnd={(e) => {
-                  setInitialState(originalArray);
+                  setInitialOpacityState(originalArray);
                   setIsOutlined(originalArray);
                 }}
                 onDrop={(e) => {
-                  e.preventDefault();
                   handleSwitch(e, index);
                 }}
               >
