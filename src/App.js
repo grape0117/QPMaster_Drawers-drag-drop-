@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Dashboard from './pages/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard.tsx';
 import DrawersComponent from './pages/Drawers/Drawers.tsx';
 
 
@@ -13,7 +13,7 @@ const App = () => {
       <div className='App'>
         <Switch>
           <Route exact path='/' component={DrawersComponent}/>
-          {/* <Route path='/' component={Dashboard}/> */}
+          <Route path='/drawers' component={Dashboard}/>
         </Switch>
       </div>
     </Router>

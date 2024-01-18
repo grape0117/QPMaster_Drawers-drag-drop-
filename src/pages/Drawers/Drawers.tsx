@@ -93,7 +93,7 @@ function DrawersComponent() {
                 <ReposCard
                   key={index}
                   index={index}
-                  description="Empty drawer"
+                  description="Leer"
                   details={drawer}
                   visibility=""
                   outline={isOutlined[index]}

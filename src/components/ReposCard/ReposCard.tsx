@@ -9,6 +9,10 @@ import {
   Group,
   ThemeIcon,
   ActionIcon,
+  Stack,
+  Center,
+  Box,
+  Title,
 } from "@mantine/core";
 import { IconTrash, IconUpload } from "@tabler/icons-react";
 
@@ -33,7 +37,7 @@ const ReposCard: React.FC<ReposCardProps> = ({
   details,
   outline,
 }: ReposCardProps) => {
-  const isXlargeScreen = useMediaQuery("(max-width: 1440px)");
+  const isXlargeScreen = useMediaQuery("(max-width: 1645px)");
 
   const handleDeleteModal = (params: any, index: number) => {
     DeleteModal(params, index);
@@ -49,73 +53,108 @@ const ReposCard: React.FC<ReposCardProps> = ({
 
   return (
     <div className="repo">
-      <Card
-        shadow="md"
-        style={{
+      <Box
+        sx={(theme) => ({
+          boxShadow: "md",
           padding: 10,
           marginBottom: 15,
           visibility: `${visibility}`,
-          backgroundColor:
-            details != null && details.completed === true ? "pink" : "",
+          borderRadius: theme.radius.md,
+          backgroundColor: details != null && details.completed 
+                ? theme.colors.pink[theme.colorScheme === 'dark' ? 9 : 3]
+                : theme.colorScheme === 'dark'
+                  ? theme.colors.dark[6]
+                  : theme.colors.gray[2],
           outline: outline ? '2px dashed gray' : '',
-        }}
+          
+        })}
       >
         {details === null ||
-        (details.boxNumber === null && details.project === "") ? (
+          (details.boxNumber === null && details.project === "") ? (
           <div>
             {details === null && <></>}
-            {details !== null && 
-              <>
-                <CardSection mb="sm">
+            {details !== null &&
+              <Group position="center">
+                <Stack align="center" spacing='sm' justify="space-between">
                   <div className="not-null">
-                    <Text mr={2} ml={2} fw={450}>
+                    <Text mr={2} ml={2} fw={500}>
                       {description}
                     </Text>
                   </div>
-                </CardSection>
-                <ThemeIcon size="lg" color="lime.4">
-                  <CreateModal />
-                </ThemeIcon>
-              </>
+                </Stack>
+                <Stack align="center" spacing='sm' justify="space-between">
+                  <ThemeIcon size="lg" color="lime.4">
+                    <CreateModal />
+                  </ThemeIcon>
+                </Stack>
+              </Group>
             }
           </div>
         ) : (
           <div style={{ margin: "auto" }}>
-            <Group pb="xs" position="center">
-              <div className="not-null">
-                <Text fw={500} color="dimmed">
-                  Box:{" "}
-                  {details.boxNumber === null ? "000" : details.boxNumber}
-                </Text>
-                <Text fw={500} size="md">
-                  {" "}
-                  {details.project}{" "}
-                </Text>
-              </div>
-            </Group>
             <Group position="center">
-              <ActionIcon
-                variant="filled"
-                size={isXlargeScreen ? "sm" : "md"}
-                color="teal.4"
-              >
-                <IconUpload
-                  size={15}
-                  onClick={() => handleOpenRequest(index)}
-                />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                size={isXlargeScreen ? "sm" : "md"}
-                color="red.4"
-                onClick={() => {}}
-              >
-                <IconTrash size={15} />
-              </ActionIcon>
+              <Stack align="center" spacing='sm' justify="space-between">
+                <div className="not-null">
+                  <Text fw={500} color="dimmed">
+                    Box: {details.boxNumber === null ? "000" : details.boxNumber}
+                  </Text>
+                  <Title fw={500} order={3}>
+                    {details.project}
+                  </Title>
+                </div>
+              </Stack>
+
+              <Stack align="center" spacing='sm' justify="space-between">
+                {isXlargeScreen ?
+                  <Group>
+                    <ActionIcon
+                      variant="filled"
+                      size='sm'
+                      color="green"
+                    >
+                      <IconUpload
+                        size={15}
+                        onClick={() => handleOpenRequest(index)}
+                      />
+                    </ActionIcon>
+
+                    <ActionIcon
+                      variant="filled"
+                      size='sm'
+                      color="red"
+                      onClick={() => { }}
+                    >
+                      <IconTrash size={15} />
+                    </ActionIcon>
+                  </Group>
+                  :
+                  <><ActionIcon
+                    variant="filled"
+                    size='sm'
+                    color="green"
+                  >
+                    <IconUpload
+                      size={15}
+                      onClick={() => handleOpenRequest(index)}
+                    />
+                  </ActionIcon>
+
+                    <ActionIcon
+                      variant="filled"
+                      size='sm'
+                      color="red"
+                      onClick={() => { }}
+                    >
+                      <IconTrash size={15} />
+                    </ActionIcon></>
+                }
+
+
+              </Stack>
             </Group>
           </div>
         )}
-      </Card>
+      </Box>
     </div>
   );
 };
